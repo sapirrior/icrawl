@@ -1,6 +1,6 @@
 # icrawl
 
-Fetch and render documentation from the [libcrew](https://github.com/sapirrior/icrawl) registry directly in your terminal.
+Fetch and render documentation from the [icrawl](https://github.com/sapirrior/icrawl) registry directly in your terminal.
 
 ```
 icrawl pkg:python-torch
