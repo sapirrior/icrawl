@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     }
 
     snprintf(final_url, sizeof(final_url), 
-             "https://raw.githubusercontent.com/sapirrior/libcrew/main/registry/%s/%s.md", 
+             "https://raw.githubusercontent.com/sapirrior/icrawl/main/registry/%s/%s.md", 
              category, item);
 
     run_engine(final_url);
