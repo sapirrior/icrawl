@@ -15,11 +15,6 @@ icrawl tool:cmake
 ```sh
 curl -fsSL https://raw.githubusercontent.com/sapirrior/icrawl/main/install.sh | bash
 ```
-
-Supports Linux (x86\_64, aarch64, armv7), macOS (x86\_64, arm64), Windows (x86\_64), and Termux (aarch64).
-
-The binary is placed in `/usr/local/bin`, `~/.local/bin`, or `$PREFIX/bin` on Termux.
-
 ---
 
 ## Usage
