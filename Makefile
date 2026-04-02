@@ -2,7 +2,7 @@ CC = clang
 CFLAGS = -Wall -Wextra -Iinclude
 LDFLAGS = -lcurl
 SRC = $(wildcard source/*.c)
-TARGET = crew
+TARGET = icrawl
 
 .PHONY: all clean run
 
