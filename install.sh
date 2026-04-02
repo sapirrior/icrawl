@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 
+# 1. Check for Compiler
 if command -v gcc >/dev/null 2>&1; then
     CC="gcc"
 elif command -v clang >/dev/null 2>&1; then
@@ -10,11 +11,7 @@ else
     exit 1
 fi
 
-if ! command -v curl >/dev/null 2>&1 || ! command -v tar >/dev/null 2>&1; then
-    echo "Error: curl and tar are required."
-    exit 1
-fi
-
+# 2. Identify OS and Install Path
 OS="$(uname -s)"
 EXT=""
 SUDO="sudo"
@@ -32,30 +29,25 @@ case "$OS" in
     MINGW*|CYGWIN*|MSYS*)
         SUDO=""
         EXT=".exe"
-        if [ ! -d "$INSTALL_DIR" ]; then
-            INSTALL_DIR="$HOME/bin"
-        fi
-        ;;
-    *)
+        INSTALL_DIR="/usr/bin" 
         ;;
 esac
 
-# Create a temporary directory and ensure it gets deleted on exit
+# 3. Create Temp Space & Fetch Source
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
-echo "Downloading icrawl source code..."
-cd "$TMP_DIR"
-curl -fsSL https://github.com/sapirrior/icrawl/archive/refs/heads/main.tar.gz | tar -xz
-cd icrawl-main
+echo "Fetching icrawl source from GitHub..."
+curl -L https://github.com/sapirrior/icrawl/archive/refs/heads/main.tar.gz | tar -xz -C "$TMP_DIR"
 
-echo "Building icrawl using $CC..."
+# 4. Compile
+cd "$TMP_DIR/icrawl-main"
+echo "Building icrawl with $CC..."
 $CC -Wall -Wextra -std=c11 -O2 -Iinclude source/main.c source/engine.c -o "icrawl$EXT" -lcurl
 
-chmod +x "icrawl$EXT"
-
+# 5. Install
 echo "Installing to $INSTALL_DIR..."
-if [ -n "$SUDO" ]; then
+if [ -n "$SUDO" ] && command -v sudo >/dev/null 2>&1; then
     $SUDO mkdir -p "$INSTALL_DIR"
     $SUDO mv "icrawl$EXT" "$INSTALL_DIR/icrawl$EXT"
 else
@@ -63,4 +55,4 @@ else
     mv "icrawl$EXT" "$INSTALL_DIR/icrawl$EXT"
 fi
 
-echo "Success. icrawl is installed."
+echo "Successfully installed icrawl!"
